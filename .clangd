@@ -1,0 +1,2 @@
+CompileFlags:                     # Tweak the parse settings
+  Remove: -fno-canonical-system-headers                  # strip all other warning-related flags
