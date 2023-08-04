@@ -3,20 +3,20 @@ project(quiche-node VERSION 0.1.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_PREFIX_PATH /root/quiche/deps)
+set(CMAKE_PREFIX_PATH /root/quiche-node/deps)
 
 set(QUICHE_PATH "/root/quiche/")
 
 add_subdirectory(/root/google_url googleurl/build)
 set(ABSL_PROPAGATE_CXX_STD ON)
-add_subdirectory(${QUICHE_PATH}third_party/abseil-cpp abseil-cpp/build)
+add_subdirectory(third_party/abseil-cpp abseil-cpp/build)
 
 find_package(Threads REQUIRED)
 find_package(OpenSSL CONFIG REQUIRED)
 find_package(protobuf CONFIG REQUIRED)
 
 # proto
-set(protobuf_PROTOC_EXE /root/rtc/deps/bin/protoc)
+set(protobuf_PROTOC_EXE /root/quiche-node/deps/bin/protoc)
 
 function(addProtobufLib libname protopath importdir)
   message(addProtobufLib: ${libname} ${protopath})
@@ -55,12 +55,12 @@ endfunction()
 addProtobufLib(cached_network_parameters_proto_lib ${QUICHE_PATH}quiche/quic/core/proto/cached_network_parameters.proto ${QUICHE_PATH})
 addProtobufLib(source_address_token_proto_lib ${QUICHE_PATH}quiche/quic/core/proto/source_address_token.proto ${QUICHE_PATH})
 addProtobufLib(crypto_server_config_proto_lib ${QUICHE_PATH}quiche/quic/core/proto/crypto_server_config.proto ${QUICHE_PATH})
-addProtobufLib(quic_trace_proto_lib ${QUICHE_PATH}third_party/quic-trace/quic_trace/quic_trace.proto ${QUICHE_PATH}third_party/quic-trace)
+addProtobufLib(quic_trace_proto_lib third_party/quic-trace/quic_trace/quic_trace.proto third_party/quic-trace)
 
 
 ##
 
-file(READ /root/quiche/old_build/source_list.json SOURCE_LIST_JSON)
+file(READ ${QUICHE_PATH}build/source_list.json SOURCE_LIST_JSON)
 
 set(quiche_core_hdrs "")
 jsonGet(${SOURCE_LIST_JSON} "quiche_core_hdrs" quiche_core_hdrs ${QUICHE_PATH})
@@ -107,6 +107,7 @@ include_directories(
   ${QUICHE_PATH}
   ${QUICHE_PATH}quiche/common/platform/default 
   src
+  .
 )
 
 

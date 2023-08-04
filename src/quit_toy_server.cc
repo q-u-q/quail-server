@@ -32,9 +32,9 @@ int QuitToyServer::Start() {
   for (const auto& version : supported_versions) {
     QuicEnableVersion(version);
   }
-
-  std::string cert = "/root/quiche/certificates/certificate.pem";
-  std::string key = "/root/quiche/certificates/certificate.key";
+  //todo: move to config
+  std::string cert = "/root/quiche-node/certificates/certificate.pem";
+  std::string key = "/root/quiche-node/certificates/certificate.key";
   auto proof_source = quit::CreateProofSource(cert, key);
 
   // backend
