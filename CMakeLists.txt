@@ -80,18 +80,6 @@ jsonGet(${SOURCE_LIST_JSON} "io_tool_support_hdrs" io_tool_support_hdrs ${QUICHE
 set(io_tool_support_srcs "")
 jsonGet(${SOURCE_LIST_JSON} "io_tool_support_srcs" io_tool_support_srcs ${QUICHE_PATH})
 
-set(default_platform_impl_hdrs "")
-jsonGet(${SOURCE_LIST_JSON} "default_platform_impl_hdrs" default_platform_impl_hdrs ${QUICHE_PATH})
-
-set(default_platform_impl_srcs "")
-jsonGet(${SOURCE_LIST_JSON} "default_platform_impl_srcs" default_platform_impl_srcs ${QUICHE_PATH})
-
-set(io_tool_support_hdrs "")
-jsonGet(${SOURCE_LIST_JSON} "io_tool_support_hdrs" io_tool_support_hdrs ${QUICHE_PATH})
-
-set(io_tool_support_srcs "")
-jsonGet(${SOURCE_LIST_JSON} "io_tool_support_srcs" io_tool_support_srcs ${QUICHE_PATH})
-
 set(default_platform_impl_tool_support_hdrs "")
 jsonGet(${SOURCE_LIST_JSON} "default_platform_impl_tool_support_hdrs" default_platform_impl_tool_support_hdrs ${QUICHE_PATH})
 
@@ -99,14 +87,45 @@ set(default_platform_impl_tool_support_srcs "")
 jsonGet(${SOURCE_LIST_JSON} "default_platform_impl_tool_support_srcs" default_platform_impl_tool_support_srcs ${QUICHE_PATH})
 
 
+set(default_platform_impl_hdrs 
+  "default/quiche_platform_impl/quiche_bug_tracker_impl.h"
+  "default/quiche_platform_impl/quiche_client_stats_impl.h"
+  "default/quiche_platform_impl/quiche_containers_impl.h"
+  "default/quiche_platform_impl/quiche_event_loop_impl.h"
+  "default/quiche_platform_impl/quiche_export_impl.h"
+  "default/quiche_platform_impl/quiche_flag_utils_impl.h"
+  "default/quiche_platform_impl/quiche_flags_impl.h"
+  "default/quiche_platform_impl/quiche_header_policy_impl.h"
+  "default/quiche_platform_impl/quiche_iovec_impl.h"
+  "default/quiche_platform_impl/quiche_logging_impl.h" # modified
+  "default/quiche_platform_impl/quiche_lower_case_string_impl.h"
+  "default/quiche_platform_impl/quiche_mem_slice_impl.h"
+  "default/quiche_platform_impl/quiche_mutex_impl.h"
+  "default/quiche_platform_impl/quiche_prefetch_impl.h"
+  "default/quiche_platform_impl/quiche_reference_counted_impl.h"
+  "default/quiche_platform_impl/quiche_server_stats_impl.h"
+  "default/quiche_platform_impl/quiche_stack_trace_impl.h"
+  "default/quiche_platform_impl/quiche_testvalue_impl.h"
+  "default/quiche_platform_impl/quiche_time_utils_impl.h"
+  "default/quiche_platform_impl/quiche_udp_socket_platform_impl.h"
+  "default/quiche_platform_impl/quiche_url_utils_impl.h"
+)
+
+set(default_platform_impl_srcs 
+  "default/quiche_platform_impl/quiche_flags_impl.cc"
+  "default/quiche_platform_impl/quiche_mutex_impl.cc"
+  "default/quiche_platform_impl/quiche_stack_trace_impl.cc"
+  "default/quiche_platform_impl/quiche_time_utils_impl.cc"
+  "default/quiche_platform_impl/quiche_url_utils_impl.cc"
+)
 
 ##
 
 ##
 include_directories(
   ${QUICHE_PATH}
-  ${QUICHE_PATH}quiche/common/platform/default 
   src
+  default
   .
 )
 
