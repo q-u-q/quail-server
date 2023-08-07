@@ -3,11 +3,14 @@ project(quiche-node VERSION 0.1.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_PREFIX_PATH /root/quiche-node/deps)
 
-set(QUICHE_PATH "/root/quiche/")
+set(DEPS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/deps)
+set(CMAKE_PREFIX_PATH ${DEPS_PATH})
 
-add_subdirectory(/root/google_url googleurl/build)
+set(QUICHE_PATH third_party/quiche/)
+
+add_subdirectory(third_party/googleurl)
+
 set(ABSL_PROPAGATE_CXX_STD ON)
 add_subdirectory(third_party/abseil-cpp abseil-cpp/build)
 
@@ -16,7 +19,7 @@ find_package(OpenSSL CONFIG REQUIRED)
 find_package(protobuf CONFIG REQUIRED)
 
 # proto
-set(protobuf_PROTOC_EXE /root/quiche-node/deps/bin/protoc)
+set(protobuf_PROTOC_EXE ${DEPS_PATH}/bin/protoc)
 
 function(addProtobufLib libname protopath importdir)
   message(addProtobufLib: ${libname} ${protopath})
