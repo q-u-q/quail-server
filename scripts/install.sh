@@ -98,7 +98,7 @@ install_uv(){
 
 install_deps(){
   $SUDO apt-get update -y
-  $SUDO apt-get install git build-essential cmake golang-go zlib1g-dev -y
+  $SUDO apt-get install build-essential cmake golang-go zlib1g-dev -y
 }
 
 install_absl(){

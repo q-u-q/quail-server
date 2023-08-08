@@ -20,13 +20,15 @@ find_package(protobuf CONFIG REQUIRED)
 
 # proto
 set(protobuf_PROTOC_EXE ${DEPS_PATH}/bin/protoc)
+set(PROTO_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/generated)
+file(MAKE_DIRECTORY ${PROTO_BINARY_DIR})
 
 function(addProtobufLib libname protopath importdir)
   message(addProtobufLib: ${libname} ${protopath})
 
   add_library(${libname} OBJECT ${protopath})
   target_link_libraries(${libname} PUBLIC protobuf::libprotobuf)
-  set(PROTO_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/generated)
+
   target_include_directories(${libname} PUBLIC $<BUILD_INTERFACE:${PROTO_BINARY_DIR}>)
     
   protobuf_generate(
