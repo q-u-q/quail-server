@@ -192,7 +192,7 @@ install_quiche(){
       pushd $THIRD_PARTY_PATH
       git clone https://github.com/google/quiche.git
       pushd quiche
-      git checkout d907cd88312862f0577833c73c13e1b3bd51b090
+      git checkout 3e9e5883670705703a3e5e3d083f1b0640c8aafc # 2023-8-7
       popd
       popd
     else

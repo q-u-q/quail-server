@@ -13,7 +13,7 @@ namespace quit {
 class QuitConverter : public WebTransportVisitor {
  public:
   QuitConverter(WebTransportSession* session);
-  void OnSessionReady(const spdy::Http2HeaderBlock& headers) override;
+  void OnSessionReady() override;
   void OnSessionClosed(WebTransportSessionError /*error_code*/,
                        const std::string& /*error_message*/) override;
 

@@ -11,7 +11,7 @@ namespace quit {
 QuitConverter::QuitConverter(WebTransportSession* session)
     : session_(session) {}
 
-void QuitConverter::OnSessionReady(const spdy::Http2HeaderBlock& headers) {
+void QuitConverter::OnSessionReady() {
   if (session_->CanOpenNextOutgoingBidirectionalStream()) {
     OnCanCreateNewOutgoingBidirectionalStream();
   }

@@ -27,13 +27,13 @@ class QuitServerSession : public QuicServerSessionBase {
  public:
   // Takes ownership of |connection|.
   QuitServerSession(const QuicConfig& config,
-                          const ParsedQuicVersionVector& supported_versions,
-                          QuicConnection* connection,
-                          QuicSession::Visitor* visitor,
-                          QuicCryptoServerStreamBase::Helper* helper,
-                          const QuicCryptoServerConfig* crypto_config,
-                          QuicCompressedCertsCache* compressed_certs_cache,
-                          QuicSimpleServerBackend* quic_simple_server_backend);
+                    const ParsedQuicVersionVector& supported_versions,
+                    QuicConnection* connection,
+                    QuicSession::Visitor* visitor,
+                    QuicCryptoServerStreamBase::Helper* helper,
+                    const QuicCryptoServerConfig* crypto_config,
+                    QuicCompressedCertsCache* compressed_certs_cache,
+                    QuicSimpleServerBackend* quic_simple_server_backend);
   QuitServerSession(const QuitServerSession&) = delete;
   QuitServerSession& operator=(const QuitServerSession&) = delete;
 
@@ -58,8 +58,11 @@ class QuitServerSession : public QuicServerSessionBase {
     return quic_simple_server_backend_;
   }
 
-  bool ShouldNegotiateWebTransport() override {
-    return quic_simple_server_backend_->SupportsWebTransport();
+  WebTransportHttp3VersionSet LocallySupportedWebTransportVersions()
+      const override {
+    return quic_simple_server_backend_->SupportsWebTransport()
+               ? kDefaultSupportedWebTransportVersions
+               : WebTransportHttp3VersionSet();
   }
   HttpDatagramSupport LocalHttpDatagramSupport() override {
     if (ShouldNegotiateWebTransport()) {
@@ -74,6 +77,6 @@ class QuitServerSession : public QuicServerSessionBase {
   QuicSimpleServerBackend* quic_simple_server_backend_;  // Not owned.
 };
 
-}
+}  // namespace quit
 
 #endif /* SRC_QUIT_SERVER_SESSION_H_ */
