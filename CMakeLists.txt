@@ -11,9 +11,6 @@ set(QUICHE_PATH third_party/quiche/)
 
 add_subdirectory(third_party/googleurl)
 
-set(ABSL_PROPAGATE_CXX_STD ON)
-add_subdirectory(third_party/abseil-cpp abseil-cpp/build)
-
 find_package(Threads REQUIRED)
 find_package(OpenSSL CONFIG REQUIRED)
 find_package(protobuf CONFIG REQUIRED)
