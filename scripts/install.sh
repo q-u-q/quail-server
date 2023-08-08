@@ -143,7 +143,7 @@ install_boringssl(){
       pushd $THIRD_PARTY_PATH
       git clone https://github.com/google/boringssl.git
       pushd boringssl
-      git checkout 62ab404cb560a6886196fe65cd3381f2ae3166ca
+      git checkout e2fa83865bfcf969f0c71673c1a5eba2814ec447
 
       cmake . --install-prefix=$INSTALL_PATH -Bbuild
       cmake --build build -- -j 8
