@@ -123,7 +123,7 @@ install_protobuf(){
       pushd $THIRD_PARTY_PATH
       git clone https://github.com/protocolbuffers/protobuf.git
       pushd protobuf
-      git checkout v4.23.4
+      git checkout v4.23.4 # 2023-7-6
 
       cmake . --install-prefix=$INSTALL_PATH -Bbuild -Dprotobuf_BUILD_TESTS=OFF -DCMAKE_CXX_STANDARD=17 -DABSL_PROPAGATE_CXX_STD=ON -DABSL_ROOT_DIR=$THIRD_PARTY_PATH/abseil-cpp
       cmake --build build -- -j 8
@@ -143,7 +143,7 @@ install_boringssl(){
       pushd $THIRD_PARTY_PATH
       git clone https://github.com/google/boringssl.git
       pushd boringssl
-      git checkout dd5219451c3ce26221762a15d867edf43b463bb2
+      git checkout dd5219451c3ce26221762a15d867edf43b463bb2 # 2023-5-17
 
       cmake . --install-prefix=$INSTALL_PATH -Bbuild
       cmake --build build -- -j 8
