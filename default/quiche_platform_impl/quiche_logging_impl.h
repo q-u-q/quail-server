@@ -20,6 +20,14 @@
 #include "quiche/common/platform/api/quiche_export.h"
 #include "quiche_platform_impl/quiche_stack_trace_impl.h"
 
+static const int VERBOSE = 1;
+static const int DEBUG = 2;
+static const int INFO = 3;
+static const int WARNING = 4;
+static const int ERROR = 5;
+static const int FATAL = 6;
+static const int DFATAL = 6;
+
 namespace quiche {
 
 class QUICHE_EXPORT LogStreamVoidHelper {
@@ -55,25 +63,7 @@ public:
         int level = 0)
       : file_name_(file_name), line_(line), function_name_(function_name),
         level_(level) {}
-  ~MyLog() {
-    std::string p1("\x1B[34mLog(");
-    if (level_ == 1) {
-      p1 = "\x1B[34mVLog(";
-    }else if(level_ == 2) {
-      p1 = "\x1B[36mDLog(";
-    }else if(level_ == 3) {
-      p1 = "\x1B[32mILog(";
-    }else if(level_ == 4) {
-      p1 = "\x1B[33mWLog(";
-    }else if(level_ == 5) {
-      p1 = "\x1B[91mELog(";
-    }else if(level_ == 6) {
-      p1 = "\x1B[35mFLog(";
-    }
-
-    std::cout << p1 << file_name_ << ":" << line_ << "): \x1B[39m" << str()
-              << std::endl;
-  }
+  ~MyLog();
 
   template <typename T> constexpr MyLog(const T &) {}
 
@@ -120,13 +110,6 @@ private:
 
 } // namespace quiche
 
-static const int VERBOSE = 1;
-static const int DEBUG = 2;
-static const int INFO = 3;
-static const int WARNING = 4;
-static const int ERROR = 5;
-static const int FATAL = 6;
-static const int DFATAL = 6;
 
 // This is necessary because we sometimes call QUICHE_DCHECK inside constexpr
 // functions, and then write non-constexpr expressions into the resulting log.

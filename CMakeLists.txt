@@ -114,6 +114,7 @@ set(default_platform_impl_hdrs
 )
 
 set(default_platform_impl_srcs 
+  "default/quiche_platform_impl/quiche_logging_impl.cc" # modified
   "default/quiche_platform_impl/quiche_flags_impl.cc"
   "default/quiche_platform_impl/quiche_mutex_impl.cc"
   "default/quiche_platform_impl/quiche_stack_trace_impl.cc"
