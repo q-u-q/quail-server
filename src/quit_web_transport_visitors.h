@@ -1,5 +1,5 @@
-#ifndef SRC_QUIT_WEB_TRANSPORT_VISITORS_H_
-#define SRC_QUIT_WEB_TRANSPORT_VISITORS_H_
+#ifndef SRC_QUIT_WEB_TRANSPORT_VISITORS
+#define SRC_QUIT_WEB_TRANSPORT_VISITORS
 
 #include <string>
 
@@ -273,4 +273,4 @@ class EchoWebTransportSessionVisitor : public WebTransportVisitor {
 
 }  // namespace quit
 
-#endif /* SRC_QUIT_WEB_TRANSPORT_VISITORS_H_ */
+#endif /* SRC_QUIT_WEB_TRANSPORT_VISITORS */

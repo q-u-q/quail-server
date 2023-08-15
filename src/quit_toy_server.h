@@ -8,7 +8,7 @@
 namespace quit {
 class QuitToyServer {
  public:
-  int Start();
+  int Start(std::string& cert, std::string& key);
   void OnTransport(QuitTransport*);
 
   sigslot::signal<QuitTransport*> signal_transport_;

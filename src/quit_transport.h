@@ -10,7 +10,8 @@ namespace quit {
 class QuitTransport {
  public:
   QuitTransport(WebTransportSession* session_);
-
+  void SendDatagram(std::string& data);
+  
   WebTransportSession* session_;
 };
 

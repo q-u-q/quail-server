@@ -25,16 +25,13 @@ using namespace quic;
 
 namespace quit {
 // quic_server.cc
-int QuitToyServer::Start() {
+int QuitToyServer::Start(std::string& cert, std::string& key) {
   ParsedQuicVersionVector supported_versions;
   supported_versions = AllSupportedVersions();
 
   for (const auto& version : supported_versions) {
     QuicEnableVersion(version);
   }
-  //todo: move to config
-  std::string cert = "/root/quiche-node/certificates/certificate.pem";
-  std::string key = "/root/quiche-node/certificates/certificate.key";
   auto proof_source = quit::CreateProofSource(cert, key);
 
   // backend
