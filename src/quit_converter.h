@@ -27,6 +27,9 @@ class QuitConverter : public WebTransportVisitor {
 
   void OnCanCreateNewOutgoingUnidirectionalStream() override;
 
+
+  void TrySendingUnidirectionalStreams();
+
   sigslot::signal<QuitTransport*> signal_transport_;
 
 
