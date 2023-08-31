@@ -13,6 +13,7 @@
 #include "quiche/quic/platform/api/quic_flags.h"
 #include "quiche/quic/platform/api/quic_logging.h"
 #include "quiche/quic/tools/quic_simple_server_stream.h"
+#include "quit_server_stream.h"
 
 namespace quit {
 
@@ -65,7 +66,7 @@ QuicSpdyStream* QuitServerSession::CreateIncomingStream(QuicStreamId id) {
   }
 
   QUIC_LOG(INFO) << "CreateIncomingStream";
-  QuicSpdyStream* stream = new QuicSimpleServerStream(
+  QuicSpdyStream* stream = new QuitServerStream(
       id, this, BIDIRECTIONAL, quic_simple_server_backend_);
   ActivateStream(absl::WrapUnique(stream));
   return stream;
@@ -74,7 +75,7 @@ QuicSpdyStream* QuitServerSession::CreateIncomingStream(QuicStreamId id) {
 QuicSpdyStream* QuitServerSession::CreateIncomingStream(
     PendingStream* pending) {
   QuicSpdyStream* stream =
-      new QuicSimpleServerStream(pending, this, quic_simple_server_backend_);
+      new QuitServerStream(pending, this, quic_simple_server_backend_);
   ActivateStream(absl::WrapUnique(stream));
   return stream;
 }
@@ -97,13 +98,13 @@ QuicSpdyStream* QuitServerSession::CreateOutgoingBidirectionalStream() {
   return stream;
 }
 
-QuicSimpleServerStream*
+QuitServerStream*
 QuitServerSession::CreateOutgoingUnidirectionalStream() {
   if (!ShouldCreateOutgoingUnidirectionalStream()) {
     return nullptr;
   }
 
-  QuicSimpleServerStream* stream = new QuicSimpleServerStream(
+  QuitServerStream* stream = new QuitServerStream(
       GetNextOutgoingUnidirectionalStreamId(), this, WRITE_UNIDIRECTIONAL,
       quic_simple_server_backend_);
   ActivateStream(absl::WrapUnique(stream));

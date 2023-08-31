@@ -74,6 +74,8 @@ void QuitServerStream::OnInitialHeadersComplete(
     }
 
     if (web_transport() != nullptr) {
+      QUIC_LOG(WARNING) << "web_transport";
+
       QuicSimpleServerBackend::WebTransportResponse response =
           quic_simple_server_backend_->ProcessWebTransportRequest(
               request_headers_, web_transport());
@@ -88,7 +90,7 @@ void QuitServerStream::OnInitialHeadersComplete(
       }
       return;
     }
-
+    QUIC_LOG(WARNING) << "FUCK";
     quic_simple_server_backend_->HandleConnectHeaders(request_headers_,
                                                       /*request_handler=*/this);
   }

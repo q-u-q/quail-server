@@ -19,6 +19,8 @@
 #include "quiche/quic/tools/quic_simple_server_stream.h"
 #include "quiche/spdy/core/http2_header_block.h"
 
+#include "quit_server_stream.h"
+
 using namespace quic;
 
 namespace quit {
@@ -47,7 +49,7 @@ class QuitServerSession : public QuicServerSessionBase {
   QuicSpdyStream* CreateIncomingStream(QuicStreamId id) override;
   QuicSpdyStream* CreateIncomingStream(PendingStream* pending) override;
   QuicSpdyStream* CreateOutgoingBidirectionalStream() override;
-  QuicSimpleServerStream* CreateOutgoingUnidirectionalStream() override;
+  QuitServerStream* CreateOutgoingUnidirectionalStream() override;
 
   // QuicServerSessionBaseMethod:
   std::unique_ptr<QuicCryptoServerStreamBase> CreateQuicCryptoServerStream(
