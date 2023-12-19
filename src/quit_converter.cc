@@ -32,33 +32,29 @@ void QuitConverter::OnSessionClosed(WebTransportSessionError /*error_code*/,
 
 void QuitConverter::OnIncomingBidirectionalStreamAvailable() {
   QUIC_LOG(WARNING) << "OnIncomingBidirectionalStreamAvailable";
-  while (true) {
-    WebTransportStream* stream = session_->AcceptIncomingBidirectionalStream();
-    if (stream == nullptr) {
-      return;
-    }
-    QUIC_LOG(WARNING)
-        << "EchoWebTransportSessionVisitor received a bidirectional stream "
-        << stream->GetStreamId();
-    stream->SetVisitor(std::make_unique<QuitStreamVisitor>(stream));
-    stream->visitor()->OnCanRead();
+  WebTransportStream* stream = session_->AcceptIncomingBidirectionalStream();
+  if (stream == nullptr) {
+    return;
   }
+  QUIC_LOG(WARNING)
+      << "EchoWebTransportSessionVisitor received a bidirectional stream "
+      << stream->GetStreamId();
+  stream->SetVisitor(std::make_unique<QuitStreamVisitor>(stream));
+  stream->visitor()->OnCanRead();
 };
 
 void QuitConverter::OnIncomingUnidirectionalStreamAvailable() {
   QUIC_LOG(WARNING) << "OnIncomingUnidirectionalStreamAvailable";
-  while (true) {
-    WebTransportStream* stream = session_->AcceptIncomingUnidirectionalStream();
-    if (stream == nullptr) {
-      return;
-    }
-    QUIC_LOG(WARNING)
-        << "EchoWebTransportSessionVisitor received a unidirectional stream";
-    stream->SetVisitor(std::make_unique<QuitUniStreamVisitor>(stream));
-    stream->visitor()->OnCanRead();
-
-    TrySendingUnidirectionalStreams();
+  WebTransportStream* stream = session_->AcceptIncomingUnidirectionalStream();
+  if (stream == nullptr) {
+    return;
   }
+  QUIC_LOG(WARNING)
+      << "EchoWebTransportSessionVisitor received a unidirectional stream";
+  stream->SetVisitor(std::make_unique<QuitUniStreamVisitor>(stream));
+  stream->visitor()->OnCanRead();
+
+  TrySendingUnidirectionalStreams();
 };
 
 void QuitConverter::OnDatagramReceived(absl::string_view datagram) {
