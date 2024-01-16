@@ -17,7 +17,7 @@
 #include "quiche/quic/tools/connect_server_backend.h"
 #include "quiche/quic/tools/quic_memory_cache_backend.h"
 
-#include "quit_proof_providers_impl.h"
+#include "impl/quit_proof_providers_impl.h"
 #include "quit_server.h"
 #include "quit_server_backend.h"
 

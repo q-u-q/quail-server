@@ -218,14 +218,15 @@ add_executable(quiche-node
     src/api/quit_transport_stream.h
     src/api/quit_transport_stream.cc
 
+    src/impl/quit_proof_providers_impl.h
+    src/impl/quit_proof_providers_impl.cc
+    
     src/quit_server.h
     src/quit_server.cc
     src/quit_toy_server.h
     src/quit_toy_server.cc
     src/quit_server_backend.h
     src/quit_server_backend.cc
-    src/quit_proof_providers_impl.h
-    src/quit_proof_providers_impl.cc
     src/quit_dispatcher.h
     src/quit_dispatcher.cc
     src/quit_server_session.h
