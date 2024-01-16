@@ -54,7 +54,4 @@ int QuitToyServer::Start(std::string& cert, std::string& key) {
   return 0;
 }
 
-void QuitToyServer::OnTransport(QuitTransport*){
-
-};
 }  // namespace quit
