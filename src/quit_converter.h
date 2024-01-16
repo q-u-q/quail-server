@@ -3,7 +3,7 @@
 
 #include "quiche/quic/core/web_transport_interface.h"
 
-#include "quit_transport.h"
+#include "api/quit_transport.h"
 #include "third_party/sigslot/sigslot.h"
 
 using namespace quic;
@@ -32,7 +32,8 @@ class QuitConverter : public WebTransportVisitor {
 
   sigslot::signal<QuitTransport*> signal_transport_;
 
-
+  QuitTransport* transport_;
+  
   WebTransportSession* session_;
 
 

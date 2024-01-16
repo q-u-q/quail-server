@@ -3,7 +3,7 @@
 
 #include "third_party/sigslot/sigslot.h"
 
-#include "quit_transport.h"
+#include "api/quit_transport.h"
 
 namespace quit {
 class QuitToyServer {

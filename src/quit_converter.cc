@@ -2,13 +2,15 @@
 #include "quit_converter.h"
 #include <absl/strings/string_view.h>
 
+#include "quiche/quic/core/web_transport_interface.h"
 #include "quiche/quic/platform/api/quic_logging.h"
 
 #include "quit_stream_visitor.h"
-#include "quit_transport.h"
 #include "quit_uni_stream_visitor.h"
 #include "quit_uni_stream_write_visitor.h"
 #include "quit_web_transport_visitors.h"
+
+#include "api/quit_transport_stream.h"
 
 namespace quit {
 
@@ -21,8 +23,8 @@ void QuitConverter::OnSessionReady() {
     OnCanCreateNewOutgoingBidirectionalStream();
   }
 
-  auto transport = new QuitTransport(session_);
-  signal_transport_(transport);
+  transport_ = new QuitTransport(session_);
+  signal_transport_(transport_);
 };
 
 void QuitConverter::OnSessionClosed(WebTransportSessionError /*error_code*/,
@@ -39,8 +41,14 @@ void QuitConverter::OnIncomingBidirectionalStreamAvailable() {
   QUIC_LOG(WARNING)
       << "EchoWebTransportSessionVisitor received a bidirectional stream "
       << stream->GetStreamId();
-  stream->SetVisitor(std::make_unique<QuitStreamVisitor>(stream));
-  stream->visitor()->OnCanRead();
+  // stream->SetVisitor(std::make_unique<QuitStreamVisitor>(stream));
+  //thread
+  auto transport_stream_visitor = std::make_unique<QuitTransportStream>(stream);
+  transport_stream_visitor->signal_message_.connect([this](uint32_t stream_id, std::string message) {
+    this->transport_->signal_message_(stream_id, message);
+  });
+  stream->SetVisitor(std::move(transport_stream_visitor));
+  // stream->visitor()->OnCanRead();
 };
 
 void QuitConverter::OnIncomingUnidirectionalStreamAvailable() {

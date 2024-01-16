@@ -212,8 +212,11 @@ target_link_libraries(quiche_core PUBLIC
 add_executable(quiche-node 
     src/quit_converter.h
     src/quit_converter.cc
-    src/quit_transport.h
-    src/quit_transport.cc
+    
+    src/api/quit_transport.h
+    src/api/quit_transport.cc
+    src/api/quit_transport_stream.h
+    src/api/quit_transport_stream.cc
 
     src/quit_server.h
     src/quit_server.cc

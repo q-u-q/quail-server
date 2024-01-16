@@ -12,7 +12,6 @@
 #include "quiche/quic/platform/api/quic_logging.h"
 
 #include "quit_converter.h"
-#include "quit_transport.h"
 #include "quit_web_transport_visitors.h"
 
 using spdy::Http2HeaderBlock;
