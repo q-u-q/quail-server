@@ -164,7 +164,6 @@ add_library(quiche_tool_support
 target_link_libraries(quiche_tool_support PUBLIC 
 quiche_core
 quiche_platform_default_tools
-googleurl
 )
 
 
@@ -181,7 +180,6 @@ target_link_libraries(io_tool_support PUBLIC
   quiche_platform_default_tools
 
   OpenSSL::Crypto
-  googleurl
   absl::strings
 )
 
