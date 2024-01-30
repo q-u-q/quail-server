@@ -108,7 +108,7 @@ install_absl(){
       pushd $THIRD_PARTY_PATH
       git clone https://github.com/abseil/abseil-cpp.git
       pushd abseil-cpp
-      git checkout aa146013a1d8c2d9f567ec23f12927f5d838780f # Last updated 2023-11-15
+      git checkout 32d314d0f5bb0ca3ff71ece49c71a728c128d43e # Last updated 2023-04-12
       popd
       popd
     else
