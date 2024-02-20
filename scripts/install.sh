@@ -97,7 +97,7 @@ install_uv(){
   fi
 }
 
-install_deps(){
+install_sys_deps(){
   $SUDO apt-get update -y
   $SUDO apt-get install build-essential cmake golang-go zlib1g-dev -y
 }
@@ -228,7 +228,7 @@ if [ ! -d $THIRD_PARTY_PATH ]; then
   mkdir -p $THIRD_PARTY_PATH
 fi
 
-install_deps
+install_sys_deps
 install_absl
 install_protobuf
 install_boringssl
