@@ -13,6 +13,7 @@ set(QUICHE_PATH ${PACKAGE_PATH}/quiche/)
 
 add_subdirectory(${PACKAGE_PATH}/googleurl)
 
+find_package(PkgConfig REQUIRED)
 find_package(Threads REQUIRED)
 find_package(OpenSSL CONFIG REQUIRED)
 find_package(protobuf CONFIG REQUIRED)
@@ -186,6 +187,8 @@ add_library(quiche_core
   ${quiche_core_hdrs} ${quiche_core_srcs}
 )
 
+pkg_check_modules(ZLIB REQUIRED IMPORTED_TARGET zlib)
+
 target_link_libraries(quiche_core PUBLIC 
   quiche_platform_default
 
@@ -194,8 +197,7 @@ target_link_libraries(quiche_core PUBLIC
   source_address_token_proto_lib
   quic_trace_proto_lib
   
-  OpenSSL::Crypto OpenSSL::SSL
-
+  OpenSSL::Crypto OpenSSL::SSL PkgConfig::ZLIB
 )
 
 # message(STATUS ${quiche_core_hdrs})
