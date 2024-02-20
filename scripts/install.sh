@@ -98,8 +98,18 @@ install_uv(){
 }
 
 install_sys_deps(){
-  $SUDO apt-get update -y
-  $SUDO apt-get install build-essential cmake golang-go zlib1g-dev -y
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+
+    $SUDO apt-get update -y
+    $SUDO apt-get install build-essential cmake golang-go zlib1g-dev -y
+
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "macos"
+  elif [[ "$OSTYPE" == "win32" ]]; then
+    echo "windows"
+  else
+    echo "unknown"
+  fi
 }
 
 install_absl(){
