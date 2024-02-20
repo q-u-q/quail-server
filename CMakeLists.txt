@@ -161,7 +161,6 @@ add_library(quiche_tool_support
 )
 
 target_link_libraries(quiche_tool_support PUBLIC 
-quiche_core
 quiche_platform_default_tools
 )
 
@@ -174,7 +173,6 @@ add_library(io_tool_support
 )
 
 target_link_libraries(io_tool_support PUBLIC
-  quiche_core
   quiche_tool_support
   quiche_platform_default_tools
 
@@ -184,7 +182,7 @@ target_link_libraries(io_tool_support PUBLIC
 
 ##
 
-add_library(quiche_core SHARED
+add_library(quiche_core
   ${quiche_core_hdrs} ${quiche_core_srcs}
 )
 
@@ -240,7 +238,6 @@ add_library(${PROJECT_NAME} SHARED
 target_link_libraries(${PROJECT_NAME}
   PUBLIC
   io_tool_support # ok
-  quiche_core
   quiche_platform_default
   quiche_platform_default_tools
   quiche_tool_support)
