@@ -1,22 +1,23 @@
-#include <unistd.h>
 #include <string>
-#include "quiche/quic/platform/api/quic_logging.h"
-#include "quit_toy_server.h"
+#include <iostream>
 
+// #include "quit_toy_server.h"
+
+#include "api/quail_server.h"
 #include "api/quit_transport.h"
 
 int main(int argc, char* argv[]) {
-  std::string cert = "/root/quiche-node/certificates/certificate.pem";
-  std::string key = "/root/quiche-node/certificates/certificate.key";
+  std::string cert = "/root/quail-server/certificates/certificate.pem";
+  std::string key = "/root/quail-server/certificates/certificate.key";
 
-  quit::QuitToyServer server;
+  quail::QuailServer server;
   server.signal_transport_.connect([](quit::QuitTransport* t) {
-    // QUIC_LOG(WARNING) << "Transport";
+    std::cout << "Transport" << std::endl;
     // std::string data("foo");
     // sleep(1);
     // t->session_->SendOrQueueDatagram(data);
     t->signal_message_.connect([t](uint32_t stream_id, std::string message) {
-      QUIC_LOG(INFO) << "stream_id:" << stream_id << " message: " << message;
+      std::cout << "stream_id:" << stream_id << " message: " << message << std::endl;
       std::string response = "Dont give a shit";
       t->Send(stream_id, response);
     });

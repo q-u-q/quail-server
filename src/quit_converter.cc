@@ -11,6 +11,7 @@
 #include "quit_web_transport_visitors.h"
 
 #include "api/quit_transport_stream.h"
+#include "api/quit_transport_impl.h"
 
 namespace quit {
 
@@ -23,7 +24,8 @@ void QuitConverter::OnSessionReady() {
     OnCanCreateNewOutgoingBidirectionalStream();
   }
 
-  transport_ = new QuitTransport(session_);
+  auto impl = new QuitTransportImpl(session_);
+  transport_ = new QuitTransport(impl);
   signal_transport_(transport_);
 };
 

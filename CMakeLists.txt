@@ -1,22 +1,23 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(quiche-node VERSION 0.1.0 LANGUAGES C CXX)
+project(quail-server VERSION 0.1.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(DEPS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/deps)
+set(PACKAGE_PATH ${DEPS_PATH}/package)
 set(CMAKE_PREFIX_PATH ${DEPS_PATH})
+set(CMAKE_POSITION_INDEPENDENT_CODE ON) # -fPIC
 
-set(QUICHE_PATH third_party/quiche/)
+set(QUICHE_PATH ${PACKAGE_PATH}/quiche/)
 
-add_subdirectory(third_party/googleurl)
+add_subdirectory(${PACKAGE_PATH}/googleurl)
 
 find_package(Threads REQUIRED)
 find_package(OpenSSL CONFIG REQUIRED)
 find_package(protobuf CONFIG REQUIRED)
 
 # proto
-set(protobuf_PROTOC_EXE ${DEPS_PATH}/bin/protoc)
 set(PROTO_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/generated)
 file(MAKE_DIRECTORY ${PROTO_BINARY_DIR})
 
@@ -57,7 +58,7 @@ endfunction()
 addProtobufLib(cached_network_parameters_proto_lib ${QUICHE_PATH}quiche/quic/core/proto/cached_network_parameters.proto ${QUICHE_PATH})
 addProtobufLib(source_address_token_proto_lib ${QUICHE_PATH}quiche/quic/core/proto/source_address_token.proto ${QUICHE_PATH})
 addProtobufLib(crypto_server_config_proto_lib ${QUICHE_PATH}quiche/quic/core/proto/crypto_server_config.proto ${QUICHE_PATH})
-addProtobufLib(quic_trace_proto_lib third_party/quic-trace/quic_trace/quic_trace.proto third_party/quic-trace)
+addProtobufLib(quic_trace_proto_lib ${PACKAGE_PATH}/quic-trace/quic_trace/quic_trace.proto ${PACKAGE_PATH}/quic-trace)
 
 
 ##
@@ -124,12 +125,10 @@ set(default_platform_impl_srcs
 
 ##
 
-##
+## for quiche
 include_directories(
   ${QUICHE_PATH}
-  src
   default
-  .
 )
 
 
@@ -185,7 +184,7 @@ target_link_libraries(io_tool_support PUBLIC
 
 ##
 
-add_library(quiche_core 
+add_library(quiche_core SHARED
   ${quiche_core_hdrs} ${quiche_core_srcs}
 )
 
@@ -207,12 +206,17 @@ target_link_libraries(quiche_core PUBLIC
 
 
 
-add_executable(quiche-node 
+add_library(${PROJECT_NAME} SHARED
     src/quit_converter.h
     src/quit_converter.cc
-    
+  
+    src/api/quail_server.h
+    src/api/quail_server.cc
+
     src/api/quit_transport.h
     src/api/quit_transport.cc
+    src/api/quit_transport_impl.h
+    src/api/quit_transport_impl.cc
     src/api/quit_transport_stream.h
     src/api/quit_transport_stream.cc
 
@@ -231,15 +235,20 @@ add_executable(quiche-node
     src/quit_server_session.cc
     src/quit_server_stream.h
     src/quit_server_stream.cc
-    src/quit_web_transport_visitors.h
-    main.cc)
+    src/quit_web_transport_visitors.h)
 
-target_link_libraries(quiche-node 
+target_link_libraries(${PROJECT_NAME}
   PUBLIC
   io_tool_support # ok
   quiche_core
   quiche_platform_default
   quiche_platform_default_tools
   quiche_tool_support)
+
+
+target_include_directories(${PROJECT_NAME}
+  PUBLIC
+  src
+)
 
 

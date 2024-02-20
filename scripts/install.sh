@@ -4,7 +4,8 @@ FILENAME=`basename $SCRIPT`
 PATHNAME=`dirname $SCRIPT`
 ROOT=$PATHNAME/..
 INSTALL_PATH=$ROOT/deps
-THIRD_PARTY_PATH=$ROOT/third_party
+LIBS_PATH=$INSTALL_PATH/lib
+THIRD_PARTY_PATH=$INSTALL_PATH/package
 
 CLEANUP=false
 
@@ -109,6 +110,11 @@ install_absl(){
       git clone https://github.com/abseil/abseil-cpp.git
       pushd abseil-cpp
       git checkout 32d314d0f5bb0ca3ff71ece49c71a728c128d43e # Last updated 2023-04-12
+
+      cmake . --install-prefix=$INSTALL_PATH -Bbuild -DABSL_BUILD_TESTING=OFF -DABSL_USE_GOOGLETEST_HEAD=OFF  -DCMAKE_CXX_STANDARD=17 -DABSL_PROPAGATE_CXX_STD=ON -DABSL_BUILD_DLL=OFF -DBUILD_SHARED_LIBS=shared -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_RPATH=$LIBS_PATH
+      cmake --build build -- -j 8
+      cmake --install build
+
       popd
       popd
     else
@@ -125,7 +131,7 @@ install_protobuf(){
       pushd protobuf
       git checkout v4.23.4 # 2023-7-6
 
-      cmake . --install-prefix=$INSTALL_PATH -Bbuild -Dprotobuf_BUILD_TESTS=OFF -DCMAKE_CXX_STANDARD=17 -DABSL_PROPAGATE_CXX_STD=ON -DABSL_ROOT_DIR=$THIRD_PARTY_PATH/abseil-cpp
+      cmake . --install-prefix=$INSTALL_PATH -Bbuild -Dprotobuf_BUILD_SHARED_LIBS=ON -Dprotobuf_BUILD_TESTS=OFF -DCMAKE_CXX_STANDARD=17 -Dprotobuf_ABSL_PROVIDER=package
       cmake --build build -- -j 8
       cmake --install build
 
@@ -143,10 +149,10 @@ install_boringssl(){
       pushd $THIRD_PARTY_PATH
       git clone https://github.com/google/boringssl.git
       pushd boringssl
-      git checkout e2fa83865bfcf969f0c71673c1a5eba2814ec447 # 2023-06-22
+      git checkout chromium-stable # xxx - update for install
 
-      cmake . --install-prefix=$INSTALL_PATH -Bbuild
-      cmake --build build -- -j 8
+      cmake . --install-prefix=$INSTALL_PATH -Bbuild -DBUILD_SHARED_LIBS=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+      cmake --build build --target crypto ssl bssl -j 8
       cmake --install build
       popd
       popd

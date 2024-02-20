@@ -1,17 +1,20 @@
 
-#include "quit_transport.h"
+#include "api/quit_transport.h"
+
+#include "api/quit_transport_impl.h"
+
 
 namespace quit {
-QuitTransport::QuitTransport(WebTransportSession* session)
-    : session_(session) {}
+QuitTransport::QuitTransport(QuitTransportImpl* impl)
+    : impl_(impl) {}
 
 void QuitTransport::SendDatagram(std::string& data) {
-  session_->SendOrQueueDatagram(data);
+  impl_->session_->SendOrQueueDatagram(data);
 }
 
 void QuitTransport::Send(uint32_t stream_id, std::string& data) {
 
-  auto stream = session_->GetStreamById(stream_id);
+  auto stream = impl_->session_->GetStreamById(stream_id);
 
   if(!stream){
     QUIC_LOG(INFO) << "getstream:" << stream_id;

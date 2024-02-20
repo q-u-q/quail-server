@@ -114,14 +114,29 @@ QuitServerBackend::ProcessWebTransportRequest(
     return response;
   }
   absl::string_view path = path_it->second;
-  if (path == "/echo") {
+
+  GURL url(absl::StrCat("https://localhost", path));
+
+  QUIC_LOG(INFO) << "ProcessWebTransportRequest path: " << url.path();
+  url::Component query(0, static_cast<int>(url.query_piece().length()));
+  url::Component key, value;
+  while (url::ExtractQueryKeyValue(url.query_piece().data(), &query, &key,
+                                   &value)) {
+    auto s_key = url.query_piece().substr(key.begin, key.len);
+    auto s_value = url.query_piece().substr(value.begin, value.len);
+    std::string a(s_key);
+    std::string b(s_value);
+
+    QUIC_LOG(INFO) << "key " << a << " value " << b;
+  }
+
+  if (url.path() == "/echo") {
     QUIC_LOG(INFO) << "echo";
 
     auto converter = std::make_unique<QuitConverter>(session);
 
-    converter->signal_transport_.connect([this](QuitTransport *t) {
-        signal_transport_(t);
-    });
+    converter->signal_transport_.connect(
+        [this](QuitTransport* t) { signal_transport_(t); });
 
     WebTransportResponse response;
     response.response_headers[":status"] = "200";
