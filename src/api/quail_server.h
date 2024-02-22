@@ -3,14 +3,14 @@
 
 #include "third_party/sigslot/sigslot.h"
 
-#include "api/quit_transport.h"
+#include "api/quail_transport.h"
 
 namespace quail {
 class QuailServer {
  public:
   int Start(std::string& cert, std::string& key);
 
-  sigslot::signal<quit::QuitTransport*> signal_transport_;
+  sigslot::signal<quit::QuailTransport*> signal_transport_;
 };
 }  // namespace quail
 

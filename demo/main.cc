@@ -4,14 +4,14 @@
 // #include "quit_toy_server.h"
 
 #include "api/quail_server.h"
-#include "api/quit_transport.h"
+#include "api/quail_transport.h"
 
 int main(int argc, char* argv[]) {
   std::string cert = "/root/quail-server/certificates/certificate.pem";
   std::string key = "/root/quail-server/certificates/certificate.key";
 
   quail::QuailServer server;
-  server.signal_transport_.connect([](quit::QuitTransport* t) {
+  server.signal_transport_.connect([](quit::QuailTransport* t) {
     std::cout << "Transport" << std::endl;
     // std::string data("foo");
     // sleep(1);

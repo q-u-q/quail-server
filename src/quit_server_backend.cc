@@ -94,7 +94,7 @@ void QuitServerBackend::FetchResponseFromBackend(
 void QuitServerBackend::CloseBackendResponseStream(
     QuicSimpleServerBackend::RequestHandler* /*quic_stream*/) {}
 
-void QuitServerBackend::OnTransport(QuitTransport* t) {
+void QuitServerBackend::OnTransport(QuailTransport* t) {
   signal_transport_(t);
 }
 
@@ -136,7 +136,7 @@ QuitServerBackend::ProcessWebTransportRequest(
     auto converter = std::make_unique<QuitConverter>(session);
 
     converter->signal_transport_.connect(
-        [this](QuitTransport* t) { signal_transport_(t); });
+        [this](QuailTransport* t) { signal_transport_(t); });
 
     WebTransportResponse response;
     response.response_headers[":status"] = "200";

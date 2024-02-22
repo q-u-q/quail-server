@@ -18,7 +18,7 @@
 
 #include "third_party/sigslot/sigslot.h"
 
-#include "api/quit_transport.h"
+#include "api/quail_transport.h"
 
 using namespace quic;
 
@@ -48,9 +48,9 @@ class QuitServerBackend : public QuicSimpleServerBackend {
       WebTransportSession* session) override;
   bool SupportsWebTransport() override { return true; }
 
-  void OnTransport(QuitTransport*);
+  void OnTransport(QuailTransport*);
 
-  sigslot::signal<QuitTransport*> signal_transport_;
+  sigslot::signal<QuailTransport*> signal_transport_;
 
  private:
   std::string GetKey(absl::string_view host, absl::string_view path) const;

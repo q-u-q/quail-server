@@ -3,8 +3,9 @@
 
 #include "quiche/quic/core/web_transport_interface.h"
 
-#include "api/quit_transport.h"
 #include "third_party/sigslot/sigslot.h"
+
+#include "api/quail_transport.h"
 
 using namespace quic;
 
@@ -30,9 +31,9 @@ class QuitConverter : public WebTransportVisitor {
 
   void TrySendingUnidirectionalStreams();
 
-  sigslot::signal<QuitTransport*> signal_transport_;
+  sigslot::signal<QuailTransport*> signal_transport_;
 
-  QuitTransport* transport_;
+  QuailTransport* transport_;
   
   WebTransportSession* session_;
 

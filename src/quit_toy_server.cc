@@ -36,7 +36,7 @@ int QuitToyServer::Start(std::string& cert, std::string& key) {
 
   // backend
   auto backend = std::make_unique<QuitServerBackend>();
-  backend->signal_transport_.connect([this](QuitTransport* t) {
+  backend->signal_transport_.connect([this](QuailTransport* t) {
     signal_transport_(t);
   });
 

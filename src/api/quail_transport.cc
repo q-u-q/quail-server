@@ -1,18 +1,18 @@
 
-#include "api/quit_transport.h"
+#include "api/quail_transport.h"
 
-#include "api/quit_transport_impl.h"
+#include "api/quail_transport_impl.h"
 
 
 namespace quit {
-QuitTransport::QuitTransport(QuitTransportImpl* impl)
+QuailTransport::QuailTransport(QuailTransportImpl* impl)
     : impl_(impl) {}
 
-void QuitTransport::SendDatagram(std::string& data) {
+void QuailTransport::SendDatagram(std::string& data) {
   impl_->session_->SendOrQueueDatagram(data);
 }
 
-void QuitTransport::Send(uint32_t stream_id, std::string& data) {
+void QuailTransport::Send(uint32_t stream_id, std::string& data) {
 
   auto stream = impl_->session_->GetStreamById(stream_id);
 

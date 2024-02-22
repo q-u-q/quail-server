@@ -35,7 +35,7 @@ int QuailServer::Start(std::string& cert, std::string& key) {
 
   // backend
   auto backend = std::make_unique<quit::QuitServerBackend>();
-  backend->signal_transport_.connect([this](quit::QuitTransport* t) {
+  backend->signal_transport_.connect([this](quit::QuailTransport* t) {
     signal_transport_(t);
   });
 

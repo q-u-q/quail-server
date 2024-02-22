@@ -1,23 +1,23 @@
-#ifndef SRC_QUIT_TRANSPORT_H_
-#define SRC_QUIT_TRANSPORT_H_
+#ifndef SRC_QUAIL_TRANSPORT_H_
+#define SRC_QUAIL_TRANSPORT_H_
 
 #include "third_party/sigslot/sigslot.h"
 
 namespace quit {
 
-class QuitTransportImpl;
-class QuitTransport {
+class QuailTransportImpl;
+class QuailTransport {
  public:
-  QuitTransport(QuitTransportImpl* impl);
+  QuailTransport(QuailTransportImpl* impl);
   void SendDatagram(std::string& data);
 
   void Send(uint32_t stream_id, std::string& data);
 
   sigslot::signal<uint32_t, std::string> signal_message_;
 
-  QuitTransportImpl* impl_;
+  QuailTransportImpl* impl_;
 };
 
 }  // namespace quit
 
-#endif /* SRC_QUIT_TRANSPORT_H_ */
+#endif /* SRC_QUAIL_TRANSPORT_H_ */

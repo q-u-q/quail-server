@@ -212,11 +212,11 @@ add_library(${PROJECT_NAME} SHARED
   
     src/api/quail_server.h
     src/api/quail_server.cc
+    src/api/quail_transport.h
+    src/api/quail_transport.cc
+    src/api/quail_transport_impl.h
+    src/api/quail_transport_impl.cc
 
-    src/api/quit_transport.h
-    src/api/quit_transport.cc
-    src/api/quit_transport_impl.h
-    src/api/quit_transport_impl.cc
     src/api/quit_transport_stream.h
     src/api/quit_transport_stream.cc
 

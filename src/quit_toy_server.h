@@ -3,14 +3,14 @@
 
 #include "third_party/sigslot/sigslot.h"
 
-#include "api/quit_transport.h"
+#include "api/quail_transport.h"
 
 namespace quit {
 class QuitToyServer {
  public:
   int Start(std::string& cert, std::string& key);
 
-  sigslot::signal<QuitTransport*> signal_transport_;
+  sigslot::signal<QuailTransport*> signal_transport_;
 };
 }  // namespace quit
 
