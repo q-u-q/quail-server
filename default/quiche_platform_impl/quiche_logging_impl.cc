@@ -49,7 +49,7 @@ MyLog::~MyLog() {
     p1 = "\x1B[35m[ FATAL] ";
   }
 
-  std::cout << p1 << getNowTime() << " ("<< file_name_ << ":" << line_ << "): \x1B[39m" << str()
+  std::cout << p1 << "|" << getNowTime() << "| ("<< file_name_ << ":" << line_ << "): \x1B[39m" << str()
             << std::endl;
 }
 }  // namespace quiche
