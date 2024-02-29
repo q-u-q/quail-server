@@ -8,7 +8,7 @@ namespace quail {
 QuailServer::QuailServer() : impl_(new QuailServerImpl()) {}
 
 void QuailServer::On(const std::string& path,
-                     std::function<void(quit::QuailTransport*)> callback) {
+                     std::function<void(QuailTransport*)> callback) {
   impl_->On(path, callback);
 }
 

@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
 
   quail::QuailServer server;
 
-  server.On("/echo", [](quit::QuailTransport* t) {
+  server.On("/echo", [](quail::QuailTransport* t) {
     std::cout << "Transport" << std::endl;
     // std::string data("foo");
     // sleep(1);

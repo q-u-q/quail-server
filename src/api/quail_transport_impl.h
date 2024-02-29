@@ -3,7 +3,7 @@
 
 #include "quiche/quic/core/web_transport_interface.h"
 
-namespace quit {
+namespace quail {
 
 class QuailTransportImpl {
  public:

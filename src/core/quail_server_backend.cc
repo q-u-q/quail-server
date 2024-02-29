@@ -1,5 +1,5 @@
 
-#include "quit_server_backend.h"
+#include "core/quail_server_backend.h"
 
 #include "absl/strings/match.h"
 #include "absl/strings/numbers.h"
@@ -17,14 +17,14 @@
 using spdy::Http2HeaderBlock;
 // using spdy::kV3LowestPriority;
 
-namespace quit {
+namespace quail {
 
-QuitServerBackend::ResourceFile::ResourceFile(const std::string& file_name)
+QuailServerBackend::ResourceFile::ResourceFile(const std::string& file_name)
     : file_name_(file_name) {}
 
-QuitServerBackend::ResourceFile::~ResourceFile() = default;
+QuailServerBackend::ResourceFile::~ResourceFile() = default;
 
-void QuitServerBackend::ResourceFile::Read() {
+void QuailServerBackend::ResourceFile::Read() {
   std::optional<std::string> maybe_file_contents =
       quiche::ReadFileContents(file_name_);
   if (!maybe_file_contents) {
@@ -87,7 +87,7 @@ void QuitServerBackend::ResourceFile::Read() {
   }
 }
 
-void QuitServerBackend::ResourceFile::SetHostPathFromBase(
+void QuailServerBackend::ResourceFile::SetHostPathFromBase(
     absl::string_view base) {
   QUICHE_DCHECK(base[0] != '/') << base;
   size_t path_start = base.find_first_of('/');
@@ -106,7 +106,7 @@ void QuitServerBackend::ResourceFile::SetHostPathFromBase(
   }
 }
 
-absl::string_view QuitServerBackend::ResourceFile::RemoveScheme(
+absl::string_view QuailServerBackend::ResourceFile::RemoveScheme(
     absl::string_view url) {
   if (absl::StartsWith(url, "https://")) {
     url.remove_prefix(8);
@@ -116,7 +116,7 @@ absl::string_view QuitServerBackend::ResourceFile::RemoveScheme(
   return url;
 }
 
-void QuitServerBackend::ResourceFile::HandleXOriginalUrl() {
+void QuailServerBackend::ResourceFile::HandleXOriginalUrl() {
   absl::string_view url(x_original_url_);
   SetHostPathFromBase(RemoveScheme(url));
 }
@@ -124,9 +124,9 @@ void QuitServerBackend::ResourceFile::HandleXOriginalUrl() {
 
 //
 
-QuitServerBackend::QuitServerBackend() {}
+QuailServerBackend::QuailServerBackend() {}
 
-std::string QuitServerBackend::GetKey(absl::string_view host,
+std::string QuailServerBackend::GetKey(absl::string_view host,
                                       absl::string_view path) const {
   std::string host_string = std::string(host);
   size_t port = host_string.find(':');
@@ -135,7 +135,7 @@ std::string QuitServerBackend::GetKey(absl::string_view host,
   return host_string + std::string(path);
 }
 
-const QuicBackendResponse* QuitServerBackend::GetResponse(
+const QuicBackendResponse* QuailServerBackend::GetResponse(
     absl::string_view host,
     absl::string_view path) const {
   QuicWriterMutexLock lock(&response_mutex_);
@@ -161,7 +161,7 @@ const QuicBackendResponse* QuitServerBackend::GetResponse(
   return it->second.get();
 }
 
-bool QuitServerBackend::InitializeBackend(const std::string& cache_directory) {
+bool QuailServerBackend::InitializeBackend(const std::string& cache_directory) {
   
   if (cache_directory.empty()) {
     QUIC_BUG(quic_bug_10932_1) << "cache_directory must not be empty.";
@@ -203,13 +203,13 @@ bool QuitServerBackend::InitializeBackend(const std::string& cache_directory) {
   return true;
 }
 
-bool QuitServerBackend::IsBackendInitialized() const {
+bool QuailServerBackend::IsBackendInitialized() const {
   return false;
 };
 
 using SpecialResponseType = QuicBackendResponse::SpecialResponseType;
 
-void QuitServerBackend::AddResponseImpl(
+void QuailServerBackend::AddResponseImpl(
     absl::string_view host, absl::string_view path,
     SpecialResponseType response_type, Http2HeaderBlock response_headers,
     absl::string_view response_body, Http2HeaderBlock response_trailers,
@@ -237,7 +237,7 @@ void QuitServerBackend::AddResponseImpl(
   responses_[key] = std::move(new_response);
 }
 
-void QuitServerBackend::AddResponse(absl::string_view host,
+void QuailServerBackend::AddResponse(absl::string_view host,
                                          absl::string_view path,
                                          Http2HeaderBlock response_headers,
                                          absl::string_view response_body) {
@@ -246,7 +246,7 @@ void QuitServerBackend::AddResponse(absl::string_view host,
                   Http2HeaderBlock(), std::vector<spdy::Http2HeaderBlock>());
 }
 
-void QuitServerBackend::FetchResponseFromBackend(
+void QuailServerBackend::FetchResponseFromBackend(
     const Http2HeaderBlock& request_headers,
     const std::string& /*request_body*/,
     QuicSimpleServerBackend::RequestHandler* quic_stream) {
@@ -275,15 +275,15 @@ void QuitServerBackend::FetchResponseFromBackend(
 }
 
 // The memory cache does not have a per-stream handler
-void QuitServerBackend::CloseBackendResponseStream(
+void QuailServerBackend::CloseBackendResponseStream(
     QuicSimpleServerBackend::RequestHandler* /*quic_stream*/) {}
 
-void QuitServerBackend::OnTransport(QuailTransport* t) {
+void QuailServerBackend::OnTransport(QuailTransport* t) {
   signal_transport_(t);
 }
 
 QuicSimpleServerBackend::WebTransportResponse
-QuitServerBackend::ProcessWebTransportRequest(
+QuailServerBackend::ProcessWebTransportRequest(
     const spdy::Http2HeaderBlock& request_headers,
     WebTransportSession* session) {
   if (!SupportsWebTransport()) {
@@ -317,7 +317,7 @@ QuitServerBackend::ProcessWebTransportRequest(
   if (url.path() == "/echo") {
     QUIC_LOG(INFO) << "echo";
 
-    auto converter = std::make_unique<QuitConverter>(session);
+    auto converter = std::make_unique<quit::QuitConverter>(session);
 
     converter->signal_transport_.connect(
         [this](QuailTransport* t) { signal_transport_(t); });

@@ -24,8 +24,8 @@ void QuitConverter::OnSessionReady() {
     OnCanCreateNewOutgoingBidirectionalStream();
   }
 
-  auto impl = new QuailTransportImpl(session_);
-  transport_ = new QuailTransport(impl);
+  auto impl = new quail::QuailTransportImpl(session_);
+  transport_ = new quail::QuailTransport(impl);
   signal_transport_(transport_);
 };
 

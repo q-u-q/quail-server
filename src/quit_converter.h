@@ -31,9 +31,9 @@ class QuitConverter : public WebTransportVisitor {
 
   void TrySendingUnidirectionalStreams();
 
-  sigslot::signal<QuailTransport*> signal_transport_;
+  sigslot::signal<quail::QuailTransport*> signal_transport_;
 
-  QuailTransport* transport_;
+  quail::QuailTransport* transport_;
   
   WebTransportSession* session_;
 

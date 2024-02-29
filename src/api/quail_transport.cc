@@ -4,7 +4,7 @@
 #include "api/quail_transport_impl.h"
 
 
-namespace quit {
+namespace quail {
 QuailTransport::QuailTransport(QuailTransportImpl* impl)
     : impl_(impl) {}
 

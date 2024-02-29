@@ -1,7 +1,7 @@
 
 #include "api/quail_transport_impl.h"
 
-namespace quit {
+namespace quail {
 
 QuailTransportImpl::QuailTransportImpl(quic::WebTransportSession* session)
     : session_(session) {}

@@ -3,7 +3,7 @@
 
 #include "third_party/sigslot/sigslot.h"
 
-namespace quit {
+namespace quail {
 
 class QuailTransportImpl;
 class QuailTransport {

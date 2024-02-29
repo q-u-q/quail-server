@@ -14,7 +14,7 @@ class QuailServer {
   QuailServer();
   int Start(std::string& cert, std::string& key);
   void On(const std::string& path,
-          std::function<void(quit::QuailTransport*)> callback);
+          std::function<void(QuailTransport*)> callback);
 
   QuailServerImpl *impl_;
 };

@@ -22,15 +22,15 @@
 namespace quail {
 
 QuailServerImpl::QuailServerImpl() {
-  backend_ = std::make_unique<quit::QuitServerBackend>();
+  backend_ = std::make_unique<QuailServerBackend>();
   backend_->InitializeBackend("/root/quail-server/html");
 }
 
 void QuailServerImpl::On(const std::string& path,
-                         std::function<void(quit::QuailTransport*)> callback) {
+                         std::function<void(QuailTransport*)> callback) {
   // backend
   backend_->signal_transport_.connect(
-      [this, callback](quit::QuailTransport* t) { callback(t); });
+      [this, callback](QuailTransport* t) { callback(t); });
 }
 
 int QuailServerImpl::Start(std::string& cert, std::string& key) {
