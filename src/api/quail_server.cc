@@ -1,7 +1,6 @@
 
 #include "api/quail_server.h"
 
-
 #include <string>
 #include <utility>
 #include <vector>
@@ -24,6 +23,12 @@
 
 namespace quail {
 
+QuailServer::QuailServer() {}
+
+
+void QuailServer::On(const std::string& path,
+                     std::function<void(quit::QuailTransport*)> callback) {}
+
 int QuailServer::Start(std::string& cert, std::string& key) {
   quic::ParsedQuicVersionVector supported_versions;
   supported_versions = AllSupportedVersions();
@@ -35,13 +40,14 @@ int QuailServer::Start(std::string& cert, std::string& key) {
 
   // backend
   auto backend = std::make_unique<quit::QuitServerBackend>();
-  backend->signal_transport_.connect([this](quit::QuailTransport* t) {
-    signal_transport_(t);
-  });
+  backend->signal_transport_.connect(
+      [this](quit::QuailTransport* t) { signal_transport_(t); });
+
+  backend->InitializeBackend("/root/quail-server/html");
 
   // server
-  auto server = std::make_unique<quit::QuitServer>(std::move(proof_source),
-                                             backend.get(), supported_versions);
+  auto server = std::make_unique<quit::QuitServer>(
+      std::move(proof_source), backend.get(), supported_versions);
 
   int port = 4433;
   if (!server->CreateUDPSocketAndListen(
@@ -52,4 +58,4 @@ int QuailServer::Start(std::string& cert, std::string& key) {
   server->HandleEventsForever();
   return 0;
 }
-}
+}  // namespace quail
