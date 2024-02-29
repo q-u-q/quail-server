@@ -17,7 +17,7 @@
 #include "quiche/quic/tools/connect_server_backend.h"
 #include "quiche/quic/tools/quic_memory_cache_backend.h"
 
-#include "impl/quit_proof_providers_impl.h"
+#include "impl/quail_proof_providers_impl.h"
 #include "quit_server.h"
 #include "quit_server_backend.h"
 
@@ -36,7 +36,7 @@ int QuailServer::Start(std::string& cert, std::string& key) {
   for (const auto& version : supported_versions) {
     QuicEnableVersion(version);
   }
-  auto proof_source = quit::CreateProofSource(cert, key);
+  auto proof_source = CreateProofSource(cert, key);
 
   // backend
   auto backend = std::make_unique<quit::QuitServerBackend>();

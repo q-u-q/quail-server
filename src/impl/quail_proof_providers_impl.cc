@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "quit_proof_providers_impl.h"
+#include "impl/quail_proof_providers_impl.h"
 
 #include <fstream>
 #include <iostream>
@@ -14,9 +14,8 @@
 #include "quiche/quic/core/crypto/proof_source_x509.h"
 #include "quiche/quic/core/crypto/proof_verifier.h"
 
-using namespace quiche;
 
-namespace quit {
+namespace quail {
 
 std::unique_ptr<quic::ProofSource> CreateProofSource(std::string &certificate_file,std::string &key_file){
   
@@ -40,7 +39,7 @@ std::unique_ptr<quic::ProofSource> CreateProofSource(std::string &certificate_fi
     exit(1);
   }
 
-  QuicheReferenceCountedPointer<quic::ProofSource::Chain> chain(
+  quiche::QuicheReferenceCountedPointer<quic::ProofSource::Chain> chain(
       new quic::ProofSource::Chain({certs}));
   return quic::ProofSourceX509::Create(chain, std::move(*private_key));
 }
