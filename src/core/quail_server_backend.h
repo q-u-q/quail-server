@@ -4,6 +4,7 @@
 #include <list>
 #include <map>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "absl/container/flat_hash_map.h"
@@ -67,7 +68,7 @@ class QuailServerBackend : public quic::QuicSimpleServerBackend {
   // Retrieve a response from this cache for a given host and path..
   // If no appropriate response exists, nullptr is returned.
   const quic::QuicBackendResponse* GetResponse(absl::string_view host,
-                                         absl::string_view path) const;
+                                               absl::string_view path) const;
 
   // Implements the functions for interface QuicSimpleServerBackend
   // |cache_cirectory| can be generated using `wget -p --save-headers <url>`.
@@ -91,18 +92,22 @@ class QuailServerBackend : public quic::QuicSimpleServerBackend {
                    spdy::Http2HeaderBlock response_headers,
                    absl::string_view response_body);
 
+  void On(std::string path, std::function<void(QuailTransport*)> callback);
+
+  std::map<std::string, std::function<void(QuailTransport*)>> callbacks_;
   sigslot::signal<QuailTransport*> signal_transport_;
 
  private:
   std::string GetKey(absl::string_view host, absl::string_view path) const;
 
-  void AddResponseImpl(absl::string_view host,
-                       absl::string_view path,
-                       quic::QuicBackendResponse::SpecialResponseType response_type,
-                       spdy::Http2HeaderBlock response_headers,
-                       absl::string_view response_body,
-                       spdy::Http2HeaderBlock response_trailers,
-                       const std::vector<spdy::Http2HeaderBlock>& early_hints);
+  void AddResponseImpl(
+      absl::string_view host,
+      absl::string_view path,
+      quic::QuicBackendResponse::SpecialResponseType response_type,
+      spdy::Http2HeaderBlock response_headers,
+      absl::string_view response_body,
+      spdy::Http2HeaderBlock response_trailers,
+      const std::vector<spdy::Http2HeaderBlock>& early_hints);
 
   // Cached responses.
   absl::flat_hash_map<std::string, std::unique_ptr<quic::QuicBackendResponse>>
@@ -119,6 +124,6 @@ class QuailServerBackend : public quic::QuicSimpleServerBackend {
   mutable quic::QuicMutex response_mutex_;
 };
 
-}  // namespace quit
+}  // namespace quail
 
 #endif /* SRC_QUAIL_SERVER_BACKEND_H_ */

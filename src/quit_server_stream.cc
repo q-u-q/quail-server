@@ -195,6 +195,7 @@ void QuitServerStream::SendResponse() {
     return;
   }
 
+  //TODO: move http3 & webtransport path together
   if (web_transport() != nullptr) {
     QuicSimpleServerBackend::WebTransportResponse response =
         quic_simple_server_backend_->ProcessWebTransportRequest(

@@ -29,8 +29,9 @@ QuailServerImpl::QuailServerImpl() {
 void QuailServerImpl::On(const std::string& path,
                          std::function<void(QuailTransport*)> callback) {
   // backend
-  backend_->signal_transport_.connect(
-      [this, callback](QuailTransport* t) { callback(t); });
+  // backend_->signal_transport_.connect(
+  //     [this, callback](QuailTransport* t) { callback(t); });
+  backend_->On(path, callback);
 }
 
 int QuailServerImpl::Start(std::string& cert, std::string& key) {

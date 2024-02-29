@@ -121,13 +121,12 @@ void QuailServerBackend::ResourceFile::HandleXOriginalUrl() {
   SetHostPathFromBase(RemoveScheme(url));
 }
 
-
 //
 
 QuailServerBackend::QuailServerBackend() {}
 
 std::string QuailServerBackend::GetKey(absl::string_view host,
-                                      absl::string_view path) const {
+                                       absl::string_view path) const {
   std::string host_string = std::string(host);
   size_t port = host_string.find(':');
   if (port != std::string::npos)
@@ -162,7 +161,6 @@ const QuicBackendResponse* QuailServerBackend::GetResponse(
 }
 
 bool QuailServerBackend::InitializeBackend(const std::string& cache_directory) {
-  
   if (cache_directory.empty()) {
     QUIC_BUG(quic_bug_10932_1) << "cache_directory must not be empty.";
     return false;
@@ -199,7 +197,6 @@ bool QuailServerBackend::InitializeBackend(const std::string& cache_directory) {
                 resource_file->spdy_headers().Clone(), resource_file->body());
   }
 
-  
   return true;
 }
 
@@ -210,9 +207,12 @@ bool QuailServerBackend::IsBackendInitialized() const {
 using SpecialResponseType = QuicBackendResponse::SpecialResponseType;
 
 void QuailServerBackend::AddResponseImpl(
-    absl::string_view host, absl::string_view path,
-    SpecialResponseType response_type, Http2HeaderBlock response_headers,
-    absl::string_view response_body, Http2HeaderBlock response_trailers,
+    absl::string_view host,
+    absl::string_view path,
+    SpecialResponseType response_type,
+    Http2HeaderBlock response_headers,
+    absl::string_view response_body,
+    Http2HeaderBlock response_trailers,
     const std::vector<spdy::Http2HeaderBlock>& early_hints) {
   QuicWriterMutexLock lock(&response_mutex_);
 
@@ -238,9 +238,9 @@ void QuailServerBackend::AddResponseImpl(
 }
 
 void QuailServerBackend::AddResponse(absl::string_view host,
-                                         absl::string_view path,
-                                         Http2HeaderBlock response_headers,
-                                         absl::string_view response_body) {
+                                     absl::string_view path,
+                                     Http2HeaderBlock response_headers,
+                                     absl::string_view response_body) {
   AddResponseImpl(host, path, QuicBackendResponse::REGULAR_RESPONSE,
                   std::move(response_headers), response_body,
                   Http2HeaderBlock(), std::vector<spdy::Http2HeaderBlock>());
@@ -314,13 +314,13 @@ QuailServerBackend::ProcessWebTransportRequest(
     QUIC_LOG(INFO) << "key " << a << " value " << b;
   }
 
-  if (url.path() == "/echo") {
-    QUIC_LOG(INFO) << "echo";
-
+  auto found = callbacks_.find(url.path());
+  if (found != callbacks_.end()) {
+    QUIC_LOG(INFO) << "path :" << found->first;
     auto converter = std::make_unique<quit::QuitConverter>(session);
 
     converter->signal_transport_.connect(
-        [this](QuailTransport* t) { signal_transport_(t); });
+        [this, found](QuailTransport* t) { found->second(t);});
 
     WebTransportResponse response;
     response.response_headers[":status"] = "200";
@@ -333,4 +333,9 @@ QuailServerBackend::ProcessWebTransportRequest(
   return response;
 }
 
-}  // namespace quit
+void QuailServerBackend::On(std::string path,
+                            std::function<void(QuailTransport*)> callback) {
+  callbacks_.insert({path, callback});
+}
+
+}  // namespace quail
