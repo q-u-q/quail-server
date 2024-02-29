@@ -8,6 +8,7 @@
 #include "api/quail_transport.h"
 
 namespace quail {
+class QuailServerImpl;
 class QuailServer {
  public:
   QuailServer();
@@ -15,7 +16,7 @@ class QuailServer {
   void On(const std::string& path,
           std::function<void(quit::QuailTransport*)> callback);
 
-  sigslot::signal<quit::QuailTransport*> signal_transport_;
+  QuailServerImpl *impl_;
 };
 }  // namespace quail
 
